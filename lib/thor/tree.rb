@@ -1,20 +1,16 @@
+require 'core_ext/hash'
 require 'thor/tree/version'
 
 class Thor
+  require 'yaml'
+
   class Tree
     def initialize(file)
+      @options = YAML.load_file(File.expand_path(file)).symbolize_keys!
     end
 
-    def source_paths
-      @source_paths ||= []
-    end
-
-    def destination_root
-      @destination_root || File.expand_path('.')
-    end
-
-    def destination_root=(root)
-      @destination_root = File.expand_path root
+    def options
+      @options ||= {}
     end
   end
 end

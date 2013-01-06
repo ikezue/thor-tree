@@ -1,0 +1,17 @@
+
+destination_root: 'spec/sandbox'
+
+source_paths:
+- 'spec/fixtures'
+- 'spec/fixtures/templates'
+
+content:
+-
+  file1: { copy: source1 }
+  file2: { template: source2 }
+  dir1:
+  -
+  dir2:
+  -
+    file21:
+    file22: { copy: src3 }
