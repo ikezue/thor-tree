@@ -6,12 +6,7 @@ source_paths:
 - 'spec/fixtures/templates'
 
 content:
--
-  file1: { copy: source1 }
-  file2: { template: source2 }
-  dir1:
-  -
-  dir2:
-  -
-    file21:
-    file22: { copy: src3 }
+  file: { ':create_file': 'file' }
+  dir:
+    dir2:
+      dir3:
