@@ -1,0 +1,15 @@
+
+destination_root: 'spec/sandbox'
+
+source_paths:
+- 'spec/fixtures'
+- 'spec/fixtures/templates'
+
+content:
+  fa0: { ':create_file': 'file content' }
+  fa1: ':create_file'
+  da0: {}
+  da1:
+    fb0: ':create_file'
+    db0:
+      dc0: {}

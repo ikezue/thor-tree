@@ -3,6 +3,8 @@ require 'core_ext/hash'
 require 'path'
 require 'thor'
 require 'thor/actions'
+require 'thor/tree/directory'
+require 'thor/tree/file'
 require 'thor/tree/version'
 require 'thor/tree/writer'
 
@@ -10,7 +12,7 @@ class Thor
   class Tree
     def initialize(file)
       @options = YAML.load_file(Path(file).expand).symbolize_keys!
-      $stdout.puts @options.inspect
+      # $stdout.puts @options.inspect
     end
 
     def options

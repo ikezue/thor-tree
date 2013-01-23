@@ -3,7 +3,24 @@ require 'spec_helper'
 describe Thor::Tree do
 
   let(:yaml_source_path) { Path.dir / '..' / 'fixtures' }
-  let(:good_yaml_1) { yaml_source_path / 'good_example_1.yml' }
+  let(:good_yaml_1) { yaml_source_path / 'example.yml' }
+  let(:output) do
+    {
+      files: {
+        'fa0'     => 'file content',
+        'fa1'     => '',
+        'da1/fb0' => '',
+      },
+      directories: {
+        'da0'           => [],
+        'da1'           => ['fb0', 'db0'],
+        'da1/db0'       => ['dc0'],
+        'da1/db0/dc0'   => [],
+      }
+    }
+  end
+  let(:directories) { output[:directories].keys }
+  let(:created_files) { ['fa0', 'fa1', 'da1/fb0'] }
 
   describe ".new" do
     context "with a properly-formatted YAML file" do
@@ -18,32 +35,43 @@ describe Thor::Tree do
   end
 
   describe "#write" do
-    before do
+    before :all do
       ::FileUtils.rm_rf(destination_root)
+      Thor::Tree.new(good_yaml_1).write
     end
 
-    let(:tree) { Thor::Tree.new(good_yaml_1) }
+    describe "file creation" do
+      context "with :create_file" do
+        it "creates the named file" do
+          created_files.each do |file|
+            (Path.dir / '..' / 'sandbox' / file ).should exist
+          end
+        end
 
-    it "writes files to the specified destination root" do
-      tree.write
-      File.exists?(Path.dir / '..' / 'sandbox' / 'file').should be_true
-
-      # expect {
-      #   tree.write
-      # }.to change {
-      #   File.exist? File.expand_path File.join(File.dirname(__FILE__), '..', 'sandbox', 'file')
-      # }.from(false).to(true)
+        it "creates files with the specified content" do
+          created_files.each do |file|
+            File.read(Path.dir / '..' / 'sandbox' / file ).should == output[:files][file]
+          end
+        end
+      end
     end
 
-    it "writes directories to the specified destination root" do
-      tree.write
-      File.exists?(Path.dir / '..' / 'sandbox' / 'dir').should be_true
+    describe "directory creation" do
+      it "creates the named directory" do
+        directories.each do |dir|
+          (Path.dir / '..' / 'sandbox' / dir).should exist
+        end
+      end
 
-      # expect {
-      #   tree.write
-      # }.to change {
-      #   File.exist? File.expand_path File.join(File.dirname(__FILE__), '..', 'sandbox', 'dir')
-      # }.from(false).to(true)
+      it "creates directories with the specified content" do
+        directories.each do |dir|
+          (Path.dir / '..' / 'sandbox' / dir).children(false).map { |c| c.to_s }.tap do |subdirs|
+            output[:directories][dir].each do |sub|
+              subdirs.should include sub
+            end
+          end
+        end
+      end
     end
   end
 end
