@@ -25,7 +25,7 @@ class Thor
 
     def write
       source_paths.each do |path|
-        Tree::Writer.source_paths << path
+        Tree::File.source_paths << path
       end
 
       Tree::Writer.new([], {}, destination_root: options[:destination_root]).tap do |w|
