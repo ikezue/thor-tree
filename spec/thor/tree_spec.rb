@@ -1,13 +1,9 @@
 require 'spec_helper'
 
-# See the following links for help with YAML:
-# http://www.yaml.org/YAML_for_ruby.html
-# http://yaml-online-parser.appspot.com/
-
 describe Thor::Tree do
 
-  let(:yaml_source_path) { Path.dir / '..' / 'fixtures' }
-  let(:good_yaml_1) { yaml_source_path / 'example.yml' }
+  let(:example_yaml) { Path.dir / '..' / 'fixtures' / 'example.yml' }
+
   let(:output) do
     {
       files_to_create: {
@@ -21,7 +17,12 @@ describe Thor::Tree do
         'da1/fb1'     => 'fb1 content',
         'da1/db0/fc0' => 'fc0 content',
       },
-      files_to_template: {},
+      files_to_template: {
+        'fa4'         => 'fa4 content',
+        'fa5'         => 'fa5 content',
+        'da1/fb2'     => 'fb2 content',
+        'da1/db0/fc1' => 'fc1 content',
+      },
       directories: {
         'da0'           => [],
         'da1'           => ['fb0', 'db0'],
@@ -36,22 +37,23 @@ describe Thor::Tree do
   let(:files_to_copy)     { output[:files_to_copy].keys }
   let(:files_to_template) { output[:files_to_template].keys }
 
-  describe ".new" do
-    context "with a properly-formatted YAML file" do
-      it "loads the YAML file" do
-        Thor::Tree.new(good_yaml_1).options.class.should == Hash
-      end
-    end
-
-    context "with a wrongly-formatted YAML file" do
-      it "raises a YAML error"
-    end
+  let(:template_variables) do
+    {
+      :@fa4_content => 'fa4 content',
+      :@fa5_content => 'fa5 content',
+      :@fb2_content => 'fb2 content',
+      :@fc1_content => 'fc1 content',
+    }
   end
 
   describe "#write" do
     before :all do
       ::FileUtils.rm_rf(destination_root)
-      Thor::Tree.new(good_yaml_1).write
+      Thor::Tree.new(example_yaml).tap do |tree|
+        template_variables.each do |key, value|
+          tree.set_template_variable key, value
+        end
+      end.write
     end
 
     describe "file creation" do
@@ -73,6 +75,14 @@ describe Thor::Tree do
         it "creates files with source content" do
           files_to_copy.each do |file|
             File.read(Path.dir / '..' / 'sandbox' / file ).strip.should == output[:files_to_copy][file]
+          end
+        end
+      end
+
+      context "with :template" do
+        it "creates files with interpolated source content" do
+          files_to_template.each do |file|
+            File.read(Path.dir / '..' / 'sandbox' / file ).strip.should == output[:files_to_template][file]
           end
         end
       end

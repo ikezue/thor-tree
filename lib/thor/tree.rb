@@ -12,15 +12,10 @@ class Thor
   class Tree
     def initialize(file)
       @options = YAML.load_file(Path(file).expand).symbolize_keys!
-      # $stdout.puts @options.inspect
     end
 
-    def options
-      @options ||= {}
-    end
-
-    def source_paths
-      options[:source_paths] ||= []
+    def set_template_variable(key, value)
+      Tree::File.set_template_variable key, value
     end
 
     def write
@@ -31,6 +26,16 @@ class Thor
       Tree::Writer.new([], {}, destination_root: options[:destination_root]).tap do |w|
         w.write options[:content]
       end
+    end
+
+    private
+
+    def options
+      @options ||= {}
+    end
+
+    def source_paths
+      options[:source_paths] ||= []
     end
   end
 end

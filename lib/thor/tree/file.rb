@@ -8,15 +8,24 @@ class Thor
           args.is_a?(String) ||
           args.is_a?(Hash) && !args.empty? && args.keys.first.start_with?(':')
         end
+
+        def set_template_variable(key, value)
+          @_template_variables ||= {}
+          @_template_variables[key] = value
+        end
+
+        def template_variables
+          @_template_variables || {}
+        end
       end
 
-      # Examples:
-      # File.new [ 'path/to/dst', ':create_file' ]
-      # File.new [ 'path/to/dst', { ':create_file' => 'file content' } ]
-      # File.new [ 'path/to/dst', ':copy_file' ]
-      # File.new [ 'path/to/dst', { ':copy_file' => 'source_file' } ]
-      # File.new [ 'path/to/dst', ':template' ]
-      # File.new [ 'path/to/dst', { ':template' => 'source_file' } ]
+      # @examples
+      #   File.new [ 'path/to/dst', ':create_file' ]
+      #   File.new [ 'path/to/dst', { ':create_file' => 'file content' } ]
+      #   File.new [ 'path/to/dst', ':copy_file' ]
+      #   File.new [ 'path/to/dst', { ':copy_file' => 'source_file' } ]
+      #   File.new [ 'path/to/dst', ':template' ]
+      #   File.new [ 'path/to/dst', { ':template' => 'source_file' } ]
       def initialize(args, options = {}, config = {})
         # $stdout.puts args
         @path = Path.new args[0].to_s
@@ -24,6 +33,7 @@ class Thor
         options.merge! options_from_args(args[1])
         super
         self.destination_root = Writer.root_path
+        File.template_variables.each { |key, value| instance_variable_set key, value }
       end
 
       no_tasks do

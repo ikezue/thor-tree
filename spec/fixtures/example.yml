@@ -10,10 +10,14 @@ content:
   fa1: ':create_file'
   fa2: { ':copy_file': 'd0/fa2'}
   fa3: ':copy_file'
+  fa4: { ':template': 'd0/fa4' }
+  fa5: ':template'
   da0: {}
   da1:
     fb0: ':create_file'
     fb1: { ':copy_file': 'd0/fb1' }
+    fb2: { ':template': 'd0/fb2' }
     db0:
       dc0: {}
       fc0: ':copy_file'
+      fc1: ':template'
