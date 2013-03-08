@@ -1,29 +1,20 @@
-# Thor::Tree
+Thor::Tree
+==========
 
-TODO: Write a gem description
+Description
+-----------
+Thor::Tree is a file and directory generator with [Thor][thor].  It will parse a file tree described in a YAML file and generate the desired file and directory structure.  File content may be specified with templates or copied from source files.
 
-## Installation
+[thor]: https://github.com/wycats/thor
 
-Add this line to your application's Gemfile:
+Installation
+------------
+    gem install thor-tree
 
-    gem 'thor-tree'
+Usage
+-----
+Please see [the specifications][specs] and [example YAML file][example_yml] for an example.
 
-And then execute:
+[specs]: https://github.com/ikezue/thor-tree/spec/thor/tree_spec.rb
+[example_yml]: https:://github.com/ikezue/thor-tree/spec/fixtures/example.yml
 
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install thor-tree
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
