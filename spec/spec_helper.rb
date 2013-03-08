@@ -25,5 +25,4 @@ RSpec.configure do |config|
 
 end
 
-require 'fileutils'
 require 'thor/tree'
