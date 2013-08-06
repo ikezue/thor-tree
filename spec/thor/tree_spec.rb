@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe Thor::Tree do
 
-  let(:example_yaml) { Path.dir / '..' / 'fixtures' / 'example.yml' }
-
   let(:output) do
     {
       files_to_create: {
@@ -37,17 +35,16 @@ describe Thor::Tree do
   let(:files_to_copy)     { output[:files_to_copy].keys }
   let(:files_to_template) { output[:files_to_template].keys }
 
-  let(:template_variables) do
-    {
-      :@fa4_content => 'fa4 content',
-      :@fa5_content => 'fa5 content',
-      :@fb2_content => 'fb2 content',
-      :@fc1_content => 'fc1 content',
-    }
-  end
-
   describe "#write" do
     before :all do
+      example_yaml = Path.dir / '..' / 'fixtures' / 'example.yml'
+      template_variables = Hash.new.tap do |h|
+        h['@fa4_content'] = 'fa4 content'
+        h['@fa5_content'] = 'fa5 content'
+        h['@fb2_content'] = 'fb2 content'
+        h['@fc1_content'] = 'fc1 content'
+      end
+
       ::FileUtils.rm_rf(destination_root)
       Thor::Tree.new(example_yaml).tap do |tree|
         template_variables.each do |key, value|
