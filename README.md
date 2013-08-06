@@ -17,4 +17,3 @@ Please see [the specifications][specs] and [example YAML file][example_yml] for 
 
 [specs]: https://github.com/ikezue/thor-tree/spec/thor/tree_spec.rb
 [example_yml]: https:://github.com/ikezue/thor-tree/spec/fixtures/example.yml
-
