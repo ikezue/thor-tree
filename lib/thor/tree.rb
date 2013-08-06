@@ -1,4 +1,4 @@
-require 'yaml'
+require 'safe_yaml'
 require 'core_ext/hash'
 require 'path'
 require 'thor'
@@ -11,7 +11,7 @@ require 'thor/tree/writer'
 class Thor
   class Tree
     def initialize(file)
-      @options = YAML.load_file(Path(file).expand).symbolize_keys!
+      @options = YAML.load_file(Path(file).expand, safe: true).symbolize_keys!
     end
 
     def set_template_variable(key, value)

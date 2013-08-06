@@ -18,6 +18,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ['lib']
 
   gem.add_dependency             'path',      '~> 1.3.1'
+  gem.add_dependency             'safe_yaml', '~> 0.9.4'
   gem.add_dependency             'thor',      '~> 0.18.1'
   gem.add_development_dependency 'bundler',   '~> 1.3.5'
   gem.add_development_dependency 'rake',      '~> 10.1.0'
