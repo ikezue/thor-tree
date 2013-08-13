@@ -27,9 +27,8 @@ class Thor
       #   File.new [ 'path/to/dst', ':template' ]
       #   File.new [ 'path/to/dst', { ':template' => 'source_file' } ]
       def initialize(args, options = {}, config = {})
-        # $stdout.puts args
-        @path = Path.new args[0].to_s
-        @filename = @path.basename
+        @_path = Path.new args[0].to_s
+        @_filename = @_path.basename
         options.merge! options_from_args(args[1])
         super
         self.destination_root = Writer.root_path
@@ -40,11 +39,11 @@ class Thor
         def write
           case options[:action]
           when :copy_file
-            copy_file options[:source] || @filename, @path
+            copy_file options[:source] || @_filename, @_path
           when :create_file
-            create_file @path, options[:content].to_s
+            create_file @_path, options[:content].to_s
           when :template
-            template options[:source] || @filename, @path
+            template options[:source] || @_filename, @_path
           end
         end
       end
