@@ -11,6 +11,7 @@ Gem::Specification.new do |gem|
   gem.description   = %q{A thor extension for generating directory structures from file trees defined in YAML}
   gem.summary       = gem.description
   gem.homepage      = 'https://github.com/ikezue/thor-tree'
+  gem.license       = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
