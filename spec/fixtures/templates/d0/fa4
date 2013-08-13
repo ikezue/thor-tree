@@ -1,1 +1,1 @@
-<%=@fa4_content%>
+<%= @fa4_content %>

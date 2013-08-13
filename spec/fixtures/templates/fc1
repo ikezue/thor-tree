@@ -1,1 +1,1 @@
-<%=@fc1_content%>
+<%= @fc1_content %>

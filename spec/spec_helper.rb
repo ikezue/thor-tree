@@ -14,15 +14,4 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = 'random'
-
-  def source_root
-    File.join(File.dirname(__FILE__), 'fixtures')
-  end
-
-  def destination_root
-    File.join(File.dirname(__FILE__), 'sandbox')
-  end
-
 end
-
-require 'thor/tree'

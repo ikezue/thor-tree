@@ -1,1 +1,1 @@
-<%=@fb2_content%>
+<%= @fb2_content %>
