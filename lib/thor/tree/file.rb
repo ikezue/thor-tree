@@ -39,11 +39,11 @@ class Thor
         def write
           case options[:action]
           when :copy_file
-            copy_file options[:source] || @_filename, @_path
+            copy_file options[:source] || @_filename, @_path, options[:thor_opts]
           when :create_file
-            create_file @_path, options[:content].to_s
+            create_file @_path, options[:content].to_s, options[:thor_opts]
           when :template
-            template options[:source] || @_filename, @_path
+            template options[:source] || @_filename, @_path, options[:thor_opts]
           end
         end
       end
@@ -57,9 +57,11 @@ class Thor
             when String
               opts[:action]  = actions.find { |action| action == args[1..-1].to_sym } || :create_file
             when Hash
-              opts[:action]  = actions.find { |action| action == args.keys.first[1..-1].to_sym } || :create_file
-              opts[:content] = args[':create_file']
-              opts[:source]  = args[':copy_file'] || args[':template']
+              h = args.map { |k, v| [k[1..-1].to_sym, v] }.to_h
+              opts[:action]  = actions.find { |action| action == h.keys.first } || :create_file
+              opts[:content] = h.delete :create_file
+              opts[:source]  = h.delete(:copy_file) || h.delete(:template)
+              opts[:thor_opts] = h
             end
           end
         end
